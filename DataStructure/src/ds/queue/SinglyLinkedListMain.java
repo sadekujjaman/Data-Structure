@@ -3,7 +3,7 @@ package ds.queue;
 public class SinglyLinkedListMain {
 
 	public static void main(String[] args) {
-		LinkedList list = new LinkedList();
+		LinkedListAnother list = new LinkedListAnother();
 		
       //   ---> 1 <-----		
 //		list.insertVal(5);
@@ -107,27 +107,15 @@ public class SinglyLinkedListMain {
 
 }
 
-class Node{
-	
-	int data;
-	Node next;
-	public Node(int data) {
-		this.data = data;
-		this.next = null;
-	}
-	public void printNode(){
-		System.out.print( this.data + " ");
-	}
-	
-}
-class LinkedList implements SinglyLinkedListInterface{
+
+class LinkedListAnother implements SinglyLinkedListInterface{
 	
 	Node firstNode;
 	Node lastNode;
 	
 	int size;
 	
-	public LinkedList() {
+	public LinkedListAnother() {
 		firstNode = null;
 		lastNode = null;
 		size = 0;
