@@ -43,6 +43,8 @@ public class BubbleSortTest {
 					array[j + 1] = temp;
 				}
 			}
+			
+			
 		}
 		
 		return array;
@@ -57,6 +59,11 @@ public class BubbleSortTest {
 					array[j + 1] = temp;
 				}
 			}
+			
+			for(int k = 0; k < array.length; k++){
+				System.out.print(array[k] + " ");
+			}
+			System.out.println();
 		}
 		
 		return array;

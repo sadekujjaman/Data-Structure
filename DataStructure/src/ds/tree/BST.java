@@ -17,7 +17,7 @@ public class BST {
 		
 		sc.close();
 	}
-	public static  Node insert(Node root, int data){
+	private static  Node insert(Node root, int data){
 		if(root == null){
 			return new Node(data);
 		}
@@ -34,17 +34,19 @@ public class BST {
 			return root;
 		}
 	}
-
-}
-
-class Node{
-	 Node left;
-	 Node right;
-	 int data;
 	
-	public Node(int data) {
-		this.data = data;
-		left = right = null;
+	private static class Node{
+		 Node left;
+		 Node right;
+		 int data;
+		
+		public Node(int data) {
+			this.data = data;
+			left = right = null;
+		}
+		
 	}
-	
+
 }
+
+
