@@ -115,7 +115,7 @@ public class LCA {
 			}
 			
 			for(int j = log2n; j >= 0; j--){
-				if (pp[p][j] != -1 && level[pp[p][j]] >= level[q]) {
+				if ((level[p] - (1 << j)) >= level[q]) {
 					 p =  pp[p][j];
 				}
 			}
