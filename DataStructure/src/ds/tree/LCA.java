@@ -135,6 +135,54 @@ public class LCA {
 		System.exit(0);
 	}
 
+	static int getKthParent(int n, int u, int v, int k, int[] parent, int[] level, int[][] pp){
+		int lca = getLCA(n, u, v, parent, level, pp);
+		if(level[u] - level[lca] <= k - 1){
+			int temp = u;
+			u = v;
+			v = temp;
+			k = 1 + level[u] + level[v] - (2 * level[lca]) - k;
+		}else{
+			k--;
+		}
+		for(int i = 0; (1<<i) <= k; i++) {
+	        if((k & (1 << i)) >= 1) {
+	            u = pp[u][i];
+	        }
+	    }
+		return (u + 1); // 
+	}
+
+	private static int getLCA(int n, int p, int q, int[] parent, int[] level, int[][] pp) {
+		int log2n = log(n, 2) + 1;
+		if(level[p] < level[q]){
+			int temp = p;
+			p = q;
+			q = temp;
+		}
+		for(int j = log2n; j >= 0; j--){
+			if ((level[p] - (1 << j)) >= level[q]) {
+				p =  pp[p][j];
+			}
+		}
+		
+		if(p == q){
+			return p;
+		}
+//		System.out.println((p + 1) + " " + (q + 1));
+		
+		for(int j = log2n; j >= 0; j--){
+			if(pp[p][j] != pp[q][j]){
+				p = pp[p][j];
+				q = pp[q][j];
+			}
+		}
+//		System.out.println(p + " " + q);
+		
+		return parent[p];
+	}
+
+	
 	private static int log(int x, int base)
 	{
 	    return (int) (Math.log(x) / Math.log(base));
