@@ -1,0 +1,45 @@
+
+    #include <bits/stdc++.h>
+    using namespace std;
+    int dp[505][505];
+    int dx[6]= {2, 2, 3, 1, 1, -1};
+    int dy[6] = {-1,1, 1, 2,3, 2};
+    int cal(int x, int y){
+        if(x == 0 && y == 0){
+            return 0;
+        }
+        if(dp[x][y] != -1){
+            return dp[x][y];
+        }
+        set<int>s;
+        for(int i = 0; i <6; i++){
+            if(x-dx[i]>=0 && y-dy[i]>= 0){
+                s.insert(cal(x-dx[i], y-dy[i]));
+            }
+        }
+        int ans  = 0;
+        while(s.find(ans)!= s.end()) ans++;
+        dp[x][y] = ans;
+        return dp[x][y];
+    }
+    int main()
+    {
+     
+        int ts;
+        cin>>ts;
+        memset(dp, -1, sizeof(dp));
+        for(int p = 1; p <= ts; p++){
+        int n;
+        cin>>n;
+        int ans = 0;
+        for(int i = 0; i <n; i++){
+            int x, y;
+            cin>>x>>y;
+            ans = ans^cal(x, y);
+            //cout<<cal(x, y);
+        }
+        if(ans) cout<<"Case "<<p<<": Alice"<<endl;
+        else cout<<"Case "<<p<<": Bob"<<endl;
+        }
+        return 0;
+    }
