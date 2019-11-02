@@ -10,30 +10,6 @@ import java.util.*;
 
 public class Main {
 
-	// static int[] dx = { 0, 1, 0, -1 };
-	// static int[] dy = { -1, 0, 1, 0 };
-	//
-	// static int[] ddx = { 0, 1, 0, -1, -1, 1, 1, -1 };
-	// static int[] ddy = { -1, 0, 1, 0, -1, -1, 1, 1 };
-	//
-	// static int[] kx = { 2, 1, -1, -2, -2, -1, 1, 2 };
-	// static int[] ky = { 1, 2, 2, 1, -1, -2, -2, -1 };
-	//
-	static long MOD = (long) Math.pow(2, 32);
-	//
-	// static final int MAX = 1000007;
-	// static long INF = Long.MAX_VALUE;
-	static int INT_INF = Integer.MAX_VALUE;
-	// static double PI = 3.1415926535;
-	//
-	// private static final double EPSILON = 1e-10;
-	//
-	// private static double dp[] = new double[MAX];
-
-	private static final int MAXN = 1000007;
-	private static final int MAXA = 1000009;
-	private static final int MAXLOG = 22;
-
 	public static void main(String[] args) {
 
 		InputReader in = new InputReader(System.in);
@@ -44,440 +20,140 @@ public class Main {
 
 
 */
-		text = in.next();
-		pattern = String.valueOf(text);
-		String ans = kmpSearch();
-		if(ans == null){
-			out.println("Just a legend");
-		}
-		else{
-			out.println(ans);
-		}
+		
+		
+		
+		
 		out.flush();
 		out.close();
 		System.exit(0);
 	}
-
-	static int[] prefixTable = new int[1000005];
-	  
-	private static long[] tree = new long[MAXN << 2];
-	private static long[] lazy = new long[MAXN << 2];
-
-	private static long[] arr = new long[MAXN];
-
-	private static long[] min = new long[MAXN << 2];
-	private static long[] max = new long[MAXN << 2];
-
-	static String text = "";
-    static String pattern = "";
-   
-    
-	 private static String  kmpSearch() {
-	       
-	        kmpPreprocess();
-	       
-	       
-	        int n = text.length(); 
-	        
-	        // If lps of n-1 is zero 
-	        if (prefixTable[n - 1] == 0) 
-	        { 
-//	            System.out.println(-1); 
-	            return null; 
-	        } 
-	        for (int i = 0; i < n - 1; i++)  
-	        { 
-	      
-	            // At any position lps[i] equals to lps[n - 1] 
-	            if (prefixTable[i] == prefixTable[n - 1])  
-	            { 
-//	                System.out.println(text.substring(0, prefixTable[i] + 1)); 
-	                return text.substring(0, prefixTable[i]); 
-	            } 
-	        } 
-	      
-	        // If answer is not possible 
-	        if (prefixTable[prefixTable[n - 1] - 1] == 0) {
-//	            System.out.println(-1); 
-	        	return null;
-	        }
-	        else{
-	            return text.substring(0, prefixTable[prefixTable[n - 1] - 1]);
-	        }
-	    }
-	 
-	 private static void kmpPreprocess() {
-	       
-		 int n = pattern.length(); 
-	      
-	        // To store longest prefix suffix 
-//	        int [] lps = new int [n]; 
-	      
-	        // Length of the previous 
-	        // longest prefix suffix 
-	        int len = 0; 
-	      
-	        // lps[0] is always 0
-	        prefixTable[0] = 0; 
-	        int i = 1; 
-	      
-	        // Loop calculates lps[i] for i = 1 to n - 1 
-	        while (i < n)  
-	        { 
-	            if (pattern.charAt(i) == pattern.charAt(len))  
-	            { 
-	                len++; 
-	                prefixTable[i] = len; 
-	                i++; 
-	            } 
-	      
-	            // (pat[i] != pat[len]) 
-	            else 
-	            { 
-	                if (len != 0) 
-	                    len = prefixTable[len - 1]; 
-	                // Also, note that we do not increment 
-	                // i here 
-	      
-	                // If len = 0 
-	                else
-	                { 
-	                    prefixTable[i] = 0; 
-	                    i++; 
-	                } 
-	            } 
-	        } 
-	    }
 	
-	 private static int countSubstring(String str, String pattern) {
-	       
-	        generatePrefixTable(pattern);
-	       
-	        int n = str.length();
-	        int m = pattern.length();
-	       
-	        int i = 0;
-	        int j = 0;
-	        int count = 0;
-	       
-	        while(i < n){
-	            if(str.charAt(i) == pattern.charAt(j)){
-	                if(j == m - 1){
-	                    count++;
-	                    j = prefixTable[j - 1];
-	                    continue;
-	                }
-	                i++;
-	                j++;
-	            }
-	            else if(j > 0){
-	                j = prefixTable[j - 1];
-	            }
-	            else{
-	             i++;
-	             
-	            }
-	        }
-	       
-	        return count;
-	    }
-	 
-	private static void generatePrefixTable(String pattern) {
-        char[] patternArr = pattern.toCharArray();
-        int n = pattern.length();
+	private static void testTrie(){
+		Trie trie = new Trie();
+		 
+	    trie.insert("Programming");
+	    trie.insert("is");
+	    trie.insert("a");
+	    trie.insert("way");
+	    trie.insert("of");
+	    trie.insert("life");
+	    
+	    
+	    System.out.println(trie.containsNode("is"));
+	    trie.delete("is");
+	    System.out.println(trie.containsNode("is"));
+	}
+
+	
+	private static class Trie {
+		private TrieNode root;
+
+		public Trie() {
+			root = new TrieNode();
+		}
+
+		void insert(String word) {
+			TrieNode current = root;
+
+			for (int i = 0; i < word.length(); i++) {
+				current = current.getChildren().computeIfAbsent(word.charAt(i), c -> new TrieNode());
+			}
+			current.setEndOfWord(true);
+		}
+
+		boolean delete(String word) {
+			return delete(root, word, 0);
+		}
+
+		boolean containsNode(String word) {
+			TrieNode current = root;
+
+			for (int i = 0; i < word.length(); i++) {
+				char ch = word.charAt(i);
+				TrieNode node = current.getChildren().get(ch);
+				if (node == null) {
+					return false;
+				}
+				current = node;
+			}
+			return current.isEndOfWord();
+		}
+
+		boolean isEmpty() {
+			return root == null;
+		}
+
+		private boolean delete(TrieNode current, String word, int index) {
+			if (index == word.length()) {
+				if (!current.isEndOfWord()) {
+					return false;
+				}
+				current.setEndOfWord(false);
+				return current.getChildren().isEmpty();
+			}
+			char ch = word.charAt(index);
+			TrieNode node = current.getChildren().get(ch);
+			if (node == null) {
+				return false;
+			}
+			boolean shouldDeleteCurrentNode = delete(node, word, index + 1) && !node.isEndOfWord();
+
+			if (shouldDeleteCurrentNode) {
+				current.getChildren().remove(ch);
+				return current.getChildren().isEmpty();
+			}
+			return false;
+		}
+	}
+
+	private static class TrieNode {
+		private final Map<Character, TrieNode> children = new HashMap<>();
+		private boolean endOfWord;
+
+		Map<Character, TrieNode> getChildren() {
+			return children;
+		}
+
+		boolean isEndOfWord() {
+			return endOfWord;
+		}
+
+		void setEndOfWord(boolean endOfWord) {
+			this.endOfWord = endOfWord;
+		}
+	}
+	
+	private static int maxMatch(int n, int m, List<Integer>[] list) {
+        int matching[] = new int[m + 1];
+        boolean visited[] = new boolean[n + 1];
        
-        int i = 1;
-        int j = 0;
-        prefixTable[0] = 0;
-       
-        while(i < n){
-            if(patternArr[i] == patternArr[j]){
-                prefixTable[i] = j + 1;
-                i++;
-                j++;
+        Arrays.fill(matching, -1);
+        int match  = 0;
+        for(int i = 0; i < n; i++){
+        	
+            Arrays.fill(visited, false);
+            if(hasPath(i, n, m, list, visited, matching)){
+                match++;
             }
-            else if(j > 0){
-                j = prefixTable[j - 1];
-            }
-            else{
-                i++;
-               
-            }
+           
         }
+        return match;
     }
  
-	
-	
-	private static void build(int node, int low, int high) {
-		if (low == high) {
-			min[node] = arr[low];
-			max[node] = arr[low];
-			return;
-		}
-
-		int mid = (low + high) / 2;
-		int left = node << 1;
-		int right = left | 1;
-		build(left, low, mid);
-		build(right, mid + 1, high);
-		max[node] = max(max[left], max[right]);
-		min[node] = min(min[left], min[right]);
-	}
-
-	private static void update(int node, int value, int x, int y, int low, int high) {
-
-		if (low > high) {
-			return;
-		}
-		int mid = (low + high) / 2;
-		int left = node << 1;
-		int right = left | 1;
-
-		if (lazy[node] != -1) {
-			tree[node] = (high - low + 1) * lazy[node];
-			if (low != high && high > low) {
-				lazy[left] = lazy[node];
-				lazy[right] = lazy[node];
-			}
-			lazy[node] = -1;
-		}
-
-		if (low > y || high < x) {
-			return;
-		}
-
-		if (low >= x && high <= y) {
-			tree[node] = (high - low + 1) * value;
-			if (low != high && high > low) {
-				lazy[left] = value;
-				lazy[right] = value;
-			}
-			return;
-
-		}
-		update(left, value, x, y, low, mid);
-		update(right, value, x, y, mid + 1, high);
-		tree[node] = tree[left] + tree[right];
-	}
-
-//	private static void propagate(int node, int low, int high) {
-//		if(tree[node].lazyValue == 0){
-//			return;
-//		}
-//		int mid = (low + high)/2;
-//		int left = node << 1;
-//		int right = left | 1;
-//		 
-//	    if(tree[node].lazyValue == 1)
-//	    {
-//	        tree[node].twoCount = tree[node].oneCount;
-//	        tree[node].oneCount = tree[node].zeroCount;
-//	        tree[node].zeroCount = (high - low + 1) - (tree[node].oneCount + tree[node].twoCount);
-//	    }
-//	    else
-//	    {
-//	    	tree[node].oneCount = tree[node].twoCount;
-//	    	tree[node].twoCount = tree[node].zeroCount;
-//	    	tree[node].zeroCount = (high - low + 1) - (tree[node].oneCount + tree[node].twoCount);
-//	    }
-//	 
-//	    if(low != high)
-//	    {
-//	        tree[left].lazyValue += tree[node].lazyValue;
-//	        tree[right].lazyValue += tree[node].lazyValue;
-//	 
-//	        tree[left].lazyValue %= 3;
-//	        tree[right].lazyValue %= 3;
-//	    }
-//	    tree[node].lazyValue = 0;
-//	}
-
-	private static Pair query(int node, int x, int y, int low, int high) {
-		// System.out.println(node + " " + low + " " + high);
-		if (low > high) {
-			return new Pair(Long.MIN_VALUE, Long.MAX_VALUE);
-		}
-		int mid = (low + high) / 2;
-		int left = node << 1;
-		int right = left | 1;
-
-		// propagate(node, low, high);
-
-		// if(lazy[node] != -1){
-		// tree[node] = (high - low + 1) * lazy[node];
-		// if(low != high && high > low){
-		// lazy[left] = lazy[node];
-		// lazy[right] = lazy[node];
-		// }
-		// lazy[node] = -1;
-		// }
-
-		if (low > y || high < x) {
-			return new Pair(Long.MIN_VALUE, Long.MAX_VALUE);
-		}
-
-		if (low >= x && high <= y) {
-			return new Pair(max[node], min[node]);
-		}
-
-		Pair leftValue = query(left, x, y, low, mid);
-		Pair rightValue = query(right, x, y, mid + 1, high);
-		return new Pair(max(leftValue.max, rightValue.max), min(leftValue.min, rightValue.min));
-	}
-
-	private static class Node {
-		long nodeValue;
-		long lazyValue;
-
-		Node() {
-			this.nodeValue = 0;
-			this.lazyValue = 0;
-		}
-
-		Node(long nodeValue, long lazyValue) {
-			this.nodeValue = nodeValue;
-			this.lazyValue = lazyValue;
-		}
-
-	}
-
-	// cycle detection of a graph
-	private static boolean detectCycleOfGraph(int n, int m, List<Integer>[] adj) {
-		int vertices = n * m;
-		boolean[] visited = new boolean[vertices];
-		for (int i = 0; i < vertices; i++) {
-			if (!visited[i]) {
-				if (dfsForDetectCycle(i, -1, adj, visited)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	// dfs for cycle detection of a graph
-	private static boolean dfsForDetectCycle(int u, int parent, List<Integer>[] adj, boolean[] visited) {
-		visited[u] = true;
-		for (int v : adj[u]) {
-			if (v != parent) {
-				if (visited[v]) {
-					return true;
-				}
-				if (dfsForDetectCycle(v, u, adj, visited)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	private static Matrix matrixPower(Matrix matrix, long x) {
-		int rows = matrix.rows;
-		int cols = matrix.cols;
-		long arr[][] = new long[rows][cols];
-		for (int i = 0; i < rows; i++) {
-			arr[i][i] = 1;
-		}
-		Matrix result = new Matrix(rows, cols, arr);
-		while (x > 0) {
-			if (x % 2 == 1) {
-				result = result.multiply(matrix);
-			}
-			matrix = matrix.multiply(matrix);
-			x /= 2;
-		}
-		return result;
-	}
-
-	// nCk
-	private static long binomialCoeff(int n, int k) {
-		long[] arr = new long[k + 1];
-		arr[0] = 1;
-		for (int i = 1; i <= n; i++) {
-			for (int j = Math.min(i, k); j > 0; j--) {
-				arr[j] = (arr[j] + arr[j - 1]);
-			}
-		}
-		return arr[k];
-	}
-
-	private static class Matrix {
-		long mat[][];
-		int rows;
-		int cols;
-
-		Matrix(int rows, int cols) {
-			this.rows = rows;
-			this.cols = cols;
-			mat = new long[rows][cols];
-		}
-
-		Matrix(int rows, int cols, long[][] mat) {
-			this.rows = rows;
-			this.cols = cols;
-			this.mat = mat;
-		}
-
-		Matrix multiply(Matrix anotherMat) {
-			int n = this.rows;
-			int m = anotherMat.cols;
-			long arr[][] = new long[n][m];
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < m; j++) {
-					long val = 0;
-					for (int k = 0; k < this.cols; k++) {
-						val = (val + (this.mat[i][k] % MOD * anotherMat.mat[k][j] % MOD) % MOD) % MOD;
-					}
-					arr[i][j] = val % MOD;
-				}
-			}
-			return new Matrix(n, m, arr);
-		}
-
-		@Override
-		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < this.rows; i++) {
-				for (int j = 0; j < this.cols; j++) {
-					sb.append(this.mat[i][j] + " ");
-				}
-				sb.append("\n");
-			}
-			return sb.toString();
-		}
-	}
-
-	private static class Pair {
-		long max;
-		long min;
-
-		Pair() {
-			max = Long.MIN_VALUE;
-			min = Long.MAX_VALUE;
-		}
-
-		Pair(long max, long min) {
-			this.max = max;
-			this.min = min;
-		}
-	}
-
-	private static class Point {
-		int x;
-		int y;
-
-		Point(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-
-		@Override
-		public String toString() {
-
-			return this.x + " " + this.y;
-		}
-	}
-
+    private static boolean hasPath(int i, int n, int m, List<Integer>[] list, boolean[] visited, int[] matching) {
+        visited[i] = true;
+       
+        for(int v : list[i]){
+            int j = matching[v];
+            if(j == -1 || (!visited[j] && hasPath(j, n, m, list, visited, matching))){
+                matching[v] = i;
+                return true;
+            }
+        }
+       
+        return false;
+    }
 	private static int log(int x, int base) {
 		return (int) (Math.log(x) / Math.log(base));
 	}
@@ -642,5 +318,160 @@ public class Main {
 			}
 			return true;
 		}
+	}
+	
+	private class TrieTusar {
+
+	    private class TrieNode {
+	        Map<Character, TrieNode> children;
+	        boolean endOfWord;
+	        public TrieNode() {
+	            children = new HashMap<>();
+	            endOfWord = false;
+	        }
+	    }
+
+	    private final TrieNode root;
+	    public TrieTusar() {
+	        root = new TrieNode();
+	    }
+	    
+	    public void test(String[] args){
+	    	
+	    
+	    	TrieTusar ttr = new TrieTusar();
+	    	ttr.insert("baggers");
+	    	ttr.insert("beggars");
+	    	ttr.insert("in");
+	    	ttr.insert("the");
+	    	ttr.insert("blowed");
+	    	ttr.insert("bowled");
+	    	ttr.insert("barn");
+	    	ttr.insert("bran");
+
+	    	
+	    }
+
+	    /**
+	     * Iterative implementation of insert into trie
+	     */
+	    public void insert(String word) {
+	        TrieNode current = root;
+	        for (int i = 0; i < word.length(); i++) {
+	            char ch = word.charAt(i);
+	            TrieNode node = current.children.get(ch);
+	            if (node == null) {
+	                node = new TrieNode();
+	                current.children.put(ch, node);
+	            }
+	           
+	            current = node;
+	          
+	        }
+	       
+	        //mark the current nodes endOfWord as true
+	        current.endOfWord = true;
+	    }
+
+	    /**
+	     * Recursive implementation of insert into trie
+	     */
+	    public void insertRecursive(String word) {
+	        insertRecursive(root, word, 0);
+	    }
+
+
+	    private void insertRecursive(TrieNode current, String word, int index) {
+	        if (index == word.length()) {
+	            //if end of word is reached then mark endOfWord as true on current node
+	            current.endOfWord = true;
+	            return;
+	        }
+	        char ch = word.charAt(index);
+	        TrieNode node = current.children.get(ch);
+
+	        //if node does not exists in map then create one and put it into map
+	        if (node == null) {
+	            node = new TrieNode();
+	            current.children.put(ch, node);
+	        }
+	        insertRecursive(node, word, index + 1);
+	    }
+
+	    /**
+	     * Iterative implementation of search into trie.
+	     */
+	    public boolean search(String word) {
+	        TrieNode current = root;
+	        for (int i = 0; i < word.length(); i++) {
+	            char ch = word.charAt(i);
+	            TrieNode node = current.children.get(ch);
+	            //if node does not exist for given char then return false
+	            if (node == null) {
+	                return false;
+	            }
+	            current = node;
+	        }
+	        //return true of current's endOfWord is true else return false.
+	        return current.endOfWord;
+	    }
+
+	    /**
+	     * Recursive implementation of search into trie.
+	     */
+	    public boolean searchRecursive(String word) {
+	        return searchRecursive(root, word, 0);
+	    }
+	    private boolean searchRecursive(TrieNode current, String word, int index) {
+	        if (index == word.length()) {
+	            //return true of current's endOfWord is true else return false.
+	            return current.endOfWord;
+	        }
+	        char ch = word.charAt(index);
+	        TrieNode node = current.children.get(ch);
+	        //if node does not exist for given char then return false
+	        if (node == null) {
+	            return false;
+	        }
+	        return searchRecursive(node, word, index + 1);
+	    }
+
+	    /**
+	     * Delete word from trie.
+	     */
+	    public void delete(String word) {
+	        delete(root, word, 0);
+	    }
+
+	    /**
+	     * Returns true if parent should delete the mapping
+	     */
+	    private boolean delete(TrieNode current, String word, int index) {
+	        if (index == word.length()) {
+	            //when end of word is reached only delete if currrent.endOfWord is true.
+	            if (!current.endOfWord) {
+	                return false;
+	            }
+	            current.endOfWord = false;
+	            //if current has no other mapping then return true
+	            return current.children.size() == 0;
+	        }
+	        char ch = word.charAt(index);
+	        TrieNode node = current.children.get(ch);
+	        if (node == null) {
+	            return false;
+	        }
+	        boolean shouldDeleteCurrentNode = delete(node, word, index + 1);
+
+	        //if true is returned then delete the mapping of character and trienode reference from map.
+	        if (shouldDeleteCurrentNode) {
+	            current.children.remove(ch);
+	            //return true if no mappings are left in the map.
+	            return current.children.size() == 0;
+	        }
+	        return false;
+	    }
+	    
+	    
 	}
 }
